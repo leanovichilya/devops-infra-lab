@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage ("Generate") {
+            steps {
+                sh 'echo "Build number: $BUILD_NUMBER" > build-report.txt'
+                sh 'id >> build-report.txt'
+                sh 'date >> build-report.txt'
+            }
+        }
+        
+        stage ("Validate") {
+            steps {
+                sh '''
+                    if grep -q "Build number:" build-report.txt; then
+                            echo "Report is valid"
+                    else 
+                        echo "FAILURE"
+                        exit 1
+                    fi
+                '''
+            }
+        }
+        
+        stage ("Archive") {
+            steps {
+                archiveArtifacts artifacts: 'build-report.txt'
+            }
+        }
+    }
+    
+}

@@ -7,7 +7,7 @@ pipeline {
                 sh 'echo "Build number: $BUILD_NUMBER" > build-report.txt'
                 sh 'id >> build-report.txt'
                 sh 'date >> build-report.txt'
-                sh 'echo Pipeline source: GitHub'
+                sh 'echo Pipeline source: GitHub - polling test'
             }
         }
         

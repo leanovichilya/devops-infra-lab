@@ -2,6 +2,12 @@ pipeline {
     agent any
     
     stages {
+        stage("Check environment"){
+            steps {
+                sh 'curl --version'
+            }
+        }
+
         stage ("Generate") {
             steps {
                 sh 'echo "Build number: $BUILD_NUMBER" > build-report.txt'

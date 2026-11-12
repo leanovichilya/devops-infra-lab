@@ -1,5 +1,13 @@
 pipeline {
     agent any
+
+    parameters {
+        booleanParam(
+            name: 'RUN_TESTS',
+            defaultValue: true,
+            description: 'Run HTTP checks'
+        )
+    }
     
     stages {
         stage("Check environment"){

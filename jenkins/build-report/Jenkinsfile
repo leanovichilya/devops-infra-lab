@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage("Check environment"){
             steps {
-                sh 'curl -I --max-time 10 https://example.com'
+                sh 'curl --fail -I --max-time 10 https://example.com/jenkins-test-not-found-123'
             }
         }
 

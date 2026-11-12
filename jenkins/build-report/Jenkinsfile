@@ -11,6 +11,9 @@ pipeline {
     
     stages {
         stage("Check environment"){
+            when {
+                expression { params.RUN_TESTS }
+            }
             steps {
                 sh 'curl --fail -I --max-time 10 https://example.com'
             }

@@ -8,6 +8,10 @@ pipeline {
             description: 'Run HTTP checks'
         )
     }
+
+    environment{
+        CHECK_URL = "https://example.com"
+    }
     
     stages {
         stage("Check environment"){
@@ -15,7 +19,7 @@ pipeline {
                 expression { params.RUN_TESTS }
             }
             steps {
-                sh 'curl --fail -I --max-time 10 https://example.com'
+                sh 'curl --fail -I --max-time 10 "$CHECK_URL"'
             }
         }
 

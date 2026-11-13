@@ -29,6 +29,24 @@ pipeline {
             }
         }
 
+        stage('Checkout selected branch'){
+            steps {
+                dir('source') {
+                    git branch: params.SOURCE_BRANCH,
+                        url: 'https://github.com/leanovichilya/devops-infra-lab.git'
+
+                    sh 'git rev-parse --short HEAD'
+                    sh '''
+                        if [ -f jenkins/build-report/branch-marker.txt ]; then
+                            cat jenkins/build-report/branch-marker.txt
+                        else
+                            echo "Branch marker not found"
+                        fi
+                    '''
+                }
+            }
+        }
+
         stage ("Generate") {
             steps {
                 sh 'echo "Build number: $BUILD_NUMBER" > build-report.txt'

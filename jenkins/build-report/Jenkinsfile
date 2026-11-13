@@ -7,6 +7,12 @@ pipeline {
             defaultValue: true,
             description: 'Run HTTP checks'
         )
+
+        string(
+            name: 'SOURCE_BRANCH',
+            defaultValue: 'main',
+            description: 'Git branch to test'
+        )
     }
 
     environment{

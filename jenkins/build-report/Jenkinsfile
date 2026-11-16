@@ -31,7 +31,9 @@ pipeline {
                 expression { params.RUN_TESTS }
             }
             steps {
-                sh 'curl --fail -I --max-time 10 "$CHECK_URL"'
+                retry(3){
+                    sh 'curl --fail -I --max-time 10 "$CHECK_URL"'
+                }
             }
         }
 

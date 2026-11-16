@@ -59,7 +59,7 @@ pipeline {
         stage ("Validate") {
             steps {
                 sh '''
-                    if grep -q "Build ID:" build-report.txt; then
+                    if grep -q "Build number:" build-report.txt; then
                             echo "Report is valid"
                     else 
                         echo "FAILURE"

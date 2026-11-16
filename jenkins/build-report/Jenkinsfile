@@ -53,14 +53,6 @@ pipeline {
             }
         }
 
-        stage ('Timeout test'){
-            steps{
-                timeout(time: 5, unit: 'SECONDS'){
-                    sh 'sleep 10'
-                }
-            }
-        }
-
         stage ("Generate") {
             steps {
                 sh 'echo "Build number: $BUILD_NUMBER" > build-report.txt'

@@ -20,6 +20,12 @@ pipeline {
     }
     
     stages {
+        stage("Prepare workspace"){
+            steps {
+                sh 'rm -f build-report.txt'
+            }
+        }
+
         stage("Check environment"){
             when {
                 expression { params.RUN_TESTS }

@@ -26,17 +26,6 @@ pipeline {
             }
         }
 
-        stage("Check environment"){
-            when {
-                expression { params.RUN_TESTS }
-            }
-            steps {
-                retry(3){
-                    sh 'curl --fail -I --max-time 10 "$CHECK_URL"'
-                }
-            }
-        }
-
         stage('Checkout selected branch'){
             steps {
                 dir('source') {
@@ -51,6 +40,30 @@ pipeline {
                             echo "Branch marker not found"
                         fi
                     '''
+                }
+            }
+        }
+
+        stage('Parallel checks') {
+            parallel {
+                stage('HTTP health'){
+                    when {
+                        expression { params.RUN_TESTS }
+                    }
+                    steps {
+                        retry(3){
+                            sh 'curl --fail -I --max-time 10 "$CHECK_URL"'
+                        }
+                    }
+                }
+
+                stage('Source files') {
+                    steps {
+                        dir('source') {
+                            sh 'test -f jenkins/build-report/Jenkinsfile'
+                            echo 'Source file exists'
+                        }
+                    }
                 }
             }
         }

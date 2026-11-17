@@ -16,7 +16,7 @@ pipeline {
     }
 
     environment{
-        CHECK_URL = 'https://example.com/jenkins-test-not-found-123'
+        CHECK_URL = 'https://example.com'
     }
     
     stages {

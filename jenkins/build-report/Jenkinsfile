@@ -52,10 +52,8 @@ pipeline {
                     when {
                         expression { params.RUN_TESTS }
                     }
-
+                    
                     steps {
-                        sh 'sleep 30'
-
                         retry(3){
                             sh 'curl --fail -I --max-time 10 "$CHECK_URL"'
                         }
@@ -65,7 +63,7 @@ pipeline {
                 stage('Source files') {
                     steps {
                         dir('source') {
-                            sh 'test -f jenkins/build-report/missing-file.txt'
+                            sh 'test -f jenkins/build-report/Jenkinsfile'
                             echo 'Source file exists'
                         }
                     }

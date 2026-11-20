@@ -60,7 +60,7 @@ pipeline {
                 stage('Source files') {
                     steps {
                         dir('source') {
-                            sh 'test -f jenkins/build-report/missing-file.txt'
+                            sh 'test -f jenkins/build-report/Jenkinsfile'
                             echo 'Source file exists'
                         }
                     }

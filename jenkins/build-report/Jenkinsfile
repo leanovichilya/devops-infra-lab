@@ -44,6 +44,16 @@ pipeline {
             }
         }
 
+        stage('Validate PR changes') {
+            when {
+                changeRequest()
+            }
+            steps {
+                sh 'test -f jenkins/build-report/pr-marker.txt'
+                echo 'PR marker exists'
+            }
+        }
+
         stage('Parallel checks') {
             failFast true
 

@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'docker-agent'
+    }
 
     parameters {
         booleanParam(
@@ -22,6 +24,9 @@ pipeline {
     stages {
         stage("Prepare workspace"){
             steps {
+                sh 'hostname'
+                sh 'id'
+                sh 'pwd'
                 sh 'rm -f build-report.txt'
             }
         }

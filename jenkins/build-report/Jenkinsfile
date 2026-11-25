@@ -31,6 +31,21 @@ pipeline {
             }
         }
 
+        stage('Credentials check') {
+            steps {
+                withCredentials([
+                    string(credentialsId: 'registry-token',
+                           variable: 'REGISTRY_TOKEN')
+                ]) {
+                    sh '''
+                        test -n "$REGISTRY_TOKEN"
+                        echo "Registry token is available"
+                        echo "$REGISTRY_TOKEN"
+                    '''
+                }
+            }
+        }
+
         stage('Checkout selected branch'){
             steps {
                 dir('source') {

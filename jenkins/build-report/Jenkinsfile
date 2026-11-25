@@ -38,11 +38,14 @@ pipeline {
                            variable: 'REGISTRY_TOKEN')
                 ]) {
                     sh '''
+                        set +x
                         test -n "$REGISTRY_TOKEN"
                         echo "Registry token is available"
-                        echo "$REGISTRY_TOKEN"
                     '''
                 }
+
+                sh 'test -z "$REGISTRY_TOKEN"'
+                echo 'Token is unavailable outside credentials block'
             }
         }
 

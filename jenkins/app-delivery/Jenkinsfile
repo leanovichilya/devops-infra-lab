@@ -1,0 +1,16 @@
+pipeline {
+    agent {
+        label 'docker-agent'
+    }
+
+    environment {
+        IMAGE_NAME = 'jenkins-web'
+        IMAGE_TAG = "${BUILD_NUMBER}"
+    }
+
+    stages ('Check build environment') {
+        stage {
+            sh 'docker version'
+        }
+    }
+}

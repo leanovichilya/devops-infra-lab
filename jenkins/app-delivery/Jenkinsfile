@@ -22,5 +22,11 @@ pipeline {
                 }
             }
         }
+
+        stage('Test'){
+            steps {
+                sh 'docker run --rm "$IMAGE_NAME:$IMAGE_TAG" nginx -t'
+            }
+        }
     }
 }

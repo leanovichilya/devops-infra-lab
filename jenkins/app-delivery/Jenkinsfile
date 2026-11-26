@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'docker-agent'
+        label 'docker-builder'
     }
 
     environment {
@@ -12,7 +12,15 @@ pipeline {
         stage('Check build environment') {
             steps {
                     sh 'docker version'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                dir('jenkins/app-delivery') {
+                    sh 'docker build -t "$IMAGE_NAME:$IMAGE_TAG" .' 
                 }
+            }
         }
     }
 }

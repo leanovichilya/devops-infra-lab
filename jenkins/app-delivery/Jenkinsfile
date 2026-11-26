@@ -18,14 +18,30 @@ pipeline {
         stage('Build') {
             steps {
                 dir('jenkins/app-delivery') {
-                    sh 'docker build -t "$IMAGE_NAME:$IMAGE_TAG" .' 
+                    sh 'docker build -t "$IMAGE_NAME:$IMAGE_TAG" .'
                 }
             }
         }
 
-        stage('Test'){
+        stage('Test') {
             steps {
                 sh 'docker run --rm "$IMAGE_NAME:$IMAGE_TAG" nginx -t'
+            }
+        }
+
+        stage('Smoke Test') {
+            steps {
+                sh 'docker run -d --name "smoke-$BUILD_NUMBER" "$IMAGE_NAME:$IMAGE_TAG"'
+                retry(5) {
+                    sleep 2
+                    sh 'docker exec "smoke-$BUILD_NUMBER" wget -qO- http://127.0.0.1/ | grep -F "Deployed by Jenkins"'
+                }
+            }
+
+            post {
+                always {
+                    sh 'docker rm -f "smoke-$BUILD_NUMBER"'
+                }
             }
         }
     }

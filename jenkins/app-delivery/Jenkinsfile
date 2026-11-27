@@ -4,7 +4,7 @@ pipeline {
     }
 
     environment {
-        IMAGE_NAME = 'jenkins-web'
+        IMAGE_NAME = 'ilyaakadem/jenkins-web'
         IMAGE_TAG = "${BUILD_NUMBER}"
     }
 
@@ -41,6 +41,27 @@ pipeline {
             post {
                 always {
                     sh 'docker rm -f "smoke-$BUILD_NUMBER"'
+                }
+            }
+        }
+
+        stage('Push') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub-credentials',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_TOKEN'
+                    )
+                ]) {
+                    sh '''
+                        set +x
+                        DOCKER_CONFIG=$(mktemp -d)
+                        export DOCKER_CONFIG
+                        trap 'rm -rf -- "$DOCKER_CONFIG"' EXIT
+                        echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push "$IMAGE_NAME:$IMAGE_TAG"
+                    '''
                 }
             }
         }
